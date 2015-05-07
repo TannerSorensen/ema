@@ -1,5 +1,6 @@
 function S = cvt(fileName)
 % CVT - convert the format of a .mat EMA file to the required format.
+% Right now, this basically only works on MTnew-esque files.
 % 
 % Input:
 %  1. FILENAME - string with the name of the file to be loaded. Include
@@ -48,7 +49,7 @@ function S = cvt(fileName)
 % DATA is a Tx1 double array.
 % -T is the number of sampled time points.
 % 
-% TS, Feb. 2015
+% Last updated: TS, Feb. 2015
 
 R = load(fileName);
 artOut={'ul','ll','jaw','tt','tb','td'};
