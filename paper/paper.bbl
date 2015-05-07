@@ -1,0 +1,41 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Attaway}{2012}]{attaway2012}
+Attaway, S. (2012).
+\newblock {\em {MATLAB: A practical introduction to programming and problem
+  solving}}.
+
+\bibitem[\protect\astroncite{Gilant}{2011}]{gilant2011}
+Gilant, A. (2011).
+\newblock {\em {MATLAB: An introduction with applications}}, volume~4.
+\newblock Hoboken, NJ.
+
+\bibitem[\protect\astroncite{Quarteroni et~al.}{2010}]{quarteroni2010}
+Quarteroni, A., Saleri, F., and Gervasio, P. (2010).
+\newblock {\em {Scientific computing with MATLAB and Octave}}, volume~3.
+\newblock Springer, Heidelberg.
+
+\bibitem[\protect\astroncite{Rosenbaum}{2012}]{rosenbaum2012}
+Rosenbaum, D.~A. (2012).
+\newblock {\em {MATLAB for behavioral scientists}}.
+\newblock Routledge, Mahwah, NJ.
+
+\bibitem[\protect\astroncite{Sch{\"o}ner and Scholz}{2007}]{schoener2007}
+Sch{\"o}ner, G. and Scholz, J.~P. (2007).
+\newblock Analyzing variance in multi-degree-of-freedom movements: Uncovering
+  structure versus extracting correlations.
+\newblock {\em Motor Control}, 11:259--275.
+
+\bibitem[\protect\astroncite{Story}{2007}]{story2007}
+Story, B. (2007).
+\newblock Time dependence of vocal tract modes during production of vowels and
+  vowel sequences.
+\newblock {\em Journal of the Acoustical Society of America}, 121:3770--3789.
+
+\bibitem[\protect\astroncite{Tseng et~al.}{2003}]{tseng2003}
+Tseng, Y.-W., Scholz, J.~P., Sch{\"o}ner, G., and Hotchkiss, L. (2003).
+\newblock Effect of accuracy constraint on joint coordination during pointing
+  movements.
+\newblock {\em Experimental Brain Research}, 149:276--288.
+
+\end{thebibliography}

@@ -1,0 +1,17 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: paper.aux
+The style file: apa.bst
+Database file #1: matlab.bib
+Warning--string name "waltham" is undefined
+--line 5 of file matlab.bib
+"}" immediately follows a field name---line 5 of file matlab.bib
+ :   address = waltham, MA
+ :                        },
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 15 of file matlab.bib
+ :   
+ :   publisher={John Wiley \& Sons, Inc}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty publisher in attaway2012
+Warning--empty publisher in gilant2011
+(There were 2 error messages)
