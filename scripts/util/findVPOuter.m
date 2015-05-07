@@ -1,4 +1,4 @@
-function [kinOut, vpOut] = findVPOuter(srchStr, type, subj, fileInputDir, articulator, spect, vargin)
+function [kinOut, vpOut] = findVPOuter(srchStr, type, subj, fileInputDir, articulator, vargin)
 % ANALYZETYPE - a wrapper function for ANALYZEMAT. This function allows the
 % user to analyze all tokens in a directory of a particular type. It
 % results in output files with kinematic quantities, velocity profiles, and
@@ -58,7 +58,7 @@ for i = 1:length(tokenList)
     fileName = tokenList(i).name;
     % Call the wrapper function of FINDLANDMARKS on the jth token of the
     % movement type.
-    [le,lev,tpv,pv,re,rev,u,dur,amp,proj_amp,meanCurv,arcLength,sk,ap,vp,disp,pos,lambda,skip] = findVPInner(fileName,articulator,spect,vargin);
+    [le,lev,tpv,pv,re,rev,u,dur,amp,proj_amp,meanCurv,arcLength,sk,ap,vp,disp,pos,lambda,skip] = findVPInner(fileName,articulator,vargin);
     % If the user indicates SKIP, then do not write the output of
     % ANALYZEMAT to the file output. 
     if ~skip

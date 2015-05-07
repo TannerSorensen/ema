@@ -1,4 +1,4 @@
-function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,spect,vargin,leRe)
+function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,vargin,leRe)
     % PLOTGUI - plot the spectrogram of the acoustic signal and the
     % displacement and tangential velocity of the articulator ARTICULATOR
     % signal.
@@ -32,13 +32,12 @@ function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,spect,vargin,leRe)
     % audio in msec and whose second entry is the right edge of the audio
     % in msec. Used in particular for long XRMB passages. In these cases, X
     % and X_T have already been segmented.
-    % 10. SPECT - logical (1-spectrogram,0-no spectrogram)
     % 
     % TS, Jan. 2015
     
-    if 8 <= nargin <= 10
+    if 8 <= nargin <= 9
         % assign variables
-        if nargin == 10
+        if nargin == 9
             audio = double(S(1).SIGNAL(ms2sampl(leRe(1),audioSrate):ms2sampl(leRe(2),audioSrate)));
         else
             audio = double(S(1).SIGNAL);
@@ -48,18 +47,16 @@ function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,spect,vargin,leRe)
         figure(1);
         bottom1=.7;bottom2=.4;bottom3=.1;left=.15;width=.8;height1=.24;height2=.28;
         
-        % top panel: spectrogram (optional)
-        if spect
-            axes('Position',[left bottom1 width height1]);
-            segmentlen = round(10*audioSrate/1000); % 10 msec
-            noverlap=round(.99*segmentlen);
-            [~,f,spectT,p] = spectrogram(audio,segmentlen,noverlap,[],audioSrate);
-            ind = find(f<8000); % 8000Hz cut-off
-            surf(spectT./1000,f(ind),10*log10(abs(p(ind,:))),'EdgeColor','none');
-            set(gca,'xlim',[0,8000]),axis xy, axis tight, colormap(gray), view(0,90);
-            ylabel('Frequency (Hz)'),title(articulator)
-            set(gca,'XTickLabel',[],'XTick',[])
-        end
+        % top panel: spectrogram
+        axes('Position',[left bottom1 width height1]);
+        segmentlen = round(10*audioSrate/1000); % 10 msec
+        noverlap=round(.1*segmentlen);
+        [~,f,spectT,p] = spectrogram(audio,segmentlen,noverlap,[],audioSrate);
+        ind = find(f<8000); % 8000Hz cut-off
+        surf(spectT./1000,f(ind),10*log10(abs(p(ind,:))),'EdgeColor','none');
+        set(gca,'xlim',[0,8000]),axis xy, axis tight, colormap(gray), view(0,90);
+        ylabel('Frequency (Hz)'),title(articulator)
+        set(gca,'XTickLabel',[],'XTick',[])
         
         % middle panel: displacement
         axes('Position',[left bottom2 width height2]);
@@ -67,7 +64,7 @@ function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,spect,vargin,leRe)
         for i=1:size(x,2)
             plot(t,x(:,i)-mean(x(:,i)),'Color',colr(i,:),'LineWidth',2), hold on
         end
-        ylabel('x-red, y-green (mm)')
+        ylabel('dim1-red, dim2-green, dim3-blue (mm)')
         h = gca;
         set(h,'XTickLabel',[],'XTick',[]),xlim([t(1),t(end)])
         
@@ -75,12 +72,12 @@ function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,spect,vargin,leRe)
         axes('Position',[left bottom3 width height2]);
         plot(t,x_t,'LineWidth',2), hold on
         ylabel('tangential velocity (cm/sec)'),xlabel('time (msec)')
-        xlim([t(1),t(end)]); ylim([-1 40]);
+        xlim([t(1),t(end)]); ylim([-1 max(x_t)*1.1]);
     else
         error('Error: plotGUI is not called correctly.');
     end
     
-    if nargin >= 9
+    if nargin >= 8
         if ~isempty(vargin)
             [le,lev,tpv,pv,re,rev,vp] = deal(vargin{:});
             projT = le+sampl2ms(1:length(vp),srate).';
