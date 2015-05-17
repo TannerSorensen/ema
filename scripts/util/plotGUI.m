@@ -45,21 +45,26 @@ function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,vargin,leRe)
         
         % Open figure and set graphical parameters.
         figure(1);
-        bottom1=.7;bottom2=.4;bottom3=.1;left=.15;width=.8;height1=.24;height2=.28;
+        bottom1=.7;bottom15=.5;bottom2=.3;bottom3=.1;left=.15;width=.8;height1=.24;height2=.18;
         
         % top panel: spectrogram
-        axes('Position',[left bottom1 width height1]);
+        h1=axes('Position',[left bottom1 width height1]);
         segmentlen = round(10*audioSrate/1000); % 10 msec
         noverlap=round(.1*segmentlen);
         [~,f,spectT,p] = spectrogram(audio,segmentlen,noverlap,[],audioSrate);
         ind = find(f<8000); % 8000Hz cut-off
-        surf(spectT./1000,f(ind),10*log10(abs(p(ind,:))),'EdgeColor','none');
+        surf(spectT,f(ind),10*log10(abs(p(ind,:))),'EdgeColor','none');
         set(gca,'xlim',[0,8000]),axis xy, axis tight, colormap(gray), view(0,90);
         ylabel('Frequency (Hz)'),title(articulator)
         set(gca,'XTickLabel',[],'XTick',[])
         
+        h15=axes('Position',[left bottom15 width height2]);
+        audioT = sampl2ms(0:(length(S(1).SIGNAL)-1),audioSrate);
+        plot(audioT,S(1).SIGNAL,'black')
+        set(h15,'XTickLabel',[],'XTick',[]),xlim([audioT(1),audioT(end)])
+        
         % middle panel: displacement
-        axes('Position',[left bottom2 width height2]);
+        h2=axes('Position',[left bottom2 width height2]);
         colr = [.8,.3,.3;.3,.8,.3;.3,.3,.8];
         for i=1:size(x,2)
             plot(t,x(:,i)-mean(x(:,i)),'Color',colr(i,:),'LineWidth',2), hold on
@@ -69,12 +74,14 @@ function plotGUI(S,t,x,x_t,articulator,srate,audioSrate,vargin,leRe)
         set(h,'XTickLabel',[],'XTick',[]),xlim([t(1),t(end)])
         
         % bottom panel: velocity
-        axes('Position',[left bottom3 width height2]);
+        h3=axes('Position',[left bottom3 width height2]);
         plot(t,x_t,'LineWidth',2), hold on
         ylabel('tangential velocity (cm/sec)'),xlabel('time (msec)')
         xlim([t(1),t(end)]); ylim([-1 max(x_t)*1.1]);
+        
+        linkaxes([h2,h3], 'x');
     else
-        error('Error: plotGUI is not called correctly.');
+        error('Error: PLOTGUI is not called correctly.');
     end
     
     if nargin >= 8

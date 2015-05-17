@@ -1,0 +1,8 @@
+Goal: Find a (set of) landmarks.
+
+Input: 
+(1) regular expression
+(2) directory
+(3) 
+
+

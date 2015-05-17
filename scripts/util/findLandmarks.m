@@ -1,4 +1,4 @@
-function [le,lev,tpv,pv,re,rev,u,hook,vp,disp,lambda] = findLandmarks(x, srate, tpvGuess, vargin)
+function [le,lev,tpv,pv,re,rev,u,vp,lambda] = findLandmarks(x, srate, tpvGuess, vargin)
 % findLandmarks - find sample at which peak velocity occurs and delimit the
 % left and right edges of an interval.
 % 
