@@ -1,4 +1,11 @@
-function plotDisplacement(s,Fs)
+function plotDisplacement(s,Fs,varargin)
+
+if nargin>2
+    center = varargin{1};
+    if strcmp(center,'center')
+        s = s-repmat(mean(fixNaN(s),1),size(s,1),1);
+    end
+end
 
 t=sampl2ms(0:(size(s,1)-1),Fs);
 
@@ -9,6 +16,8 @@ for i=1:size(s,2)
 end
 hold off
 ylabel('1-red,2-green,3-blue (mm)')
-set(gca,'XTickLabel',[],'XTick',[]),xlim([t(1),t(end)])
+set(gca,'XTickLabel',[],'XTick',[])
+xlim([t(1),t(end)])
+ylim(max(abs(s(:)))*[-1.1 1.1]);
 
 end

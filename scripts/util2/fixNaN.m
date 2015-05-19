@@ -6,6 +6,7 @@ function data = fixNaN(data, dim)
 % default DIM is 1
 
 % 03/00 mkt
+% revised May, 2015, TS
 
 if nargin<1,
 	eval('help FixNaN');
@@ -45,3 +46,5 @@ end;
 for n = i, data(n) = y(n); end;
 
 data = permute(data, [2:dim 1 dim+1:nDims]);
+
+data = double(data);
