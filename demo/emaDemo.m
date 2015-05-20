@@ -4,6 +4,18 @@ addpath(genpath('../util'))
 % Find the peak velocity of the /o/ constriction 
 % of the vowel /o/ in the word 'go' of sentence 
 % 'When can we go home'. 
+% 
+% GUI instructions:
+%   select (hotkey s) - toggle select mode. when 
+%     in select mode, click axes to select a 
+%     landmark time point.
+%   confirm (hotkey d) - confirm selection 
+%     (selection is displayed as a red dot)
+%     and advance to next token.
+%   slider bar - move forward or backward in 
+%     time (x-axis)
+%   number field - change size of visible time 
+%     window (msec)
 iDir='../data';
 iStr='.*.mat';
 lmStr='pv';

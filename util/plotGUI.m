@@ -7,6 +7,19 @@ function lm = plotGUI(a,Fa,s,Fs,lmStr)
 %   LMSTR - string, landmark name (e.g., 'pv')
 % Output:
 %   LM - integer, landmark time point in samples.
+%
+% GUI instructions for users
+% 
+%   select (hotkey s) - toggle select mode. when 
+%     in select mode, click axes to select a 
+%     landmark time point.
+%   confirm (hotkey d) - confirm selection 
+%     (selection is displayed as a red dot)
+%     and advance to next token.
+%   slider bar - move forward or backward in 
+%     time (x-axis)
+%   number field - change size of visible time 
+%     window (msec)
 
     %---------------------
     % Create axes and GUI.
