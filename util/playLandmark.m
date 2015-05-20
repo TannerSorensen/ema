@@ -1,4 +1,4 @@
-function plotLandmarks(fn,lmStr,tongue,lips,jaw,lm,winSize)
+function playLandmark(fn,lmStr,tongue,lips,jaw,lm,winSize)
 % Input:
 %   WIN - plotted window size in msec.
 warning('off','MATLAB:chckxy:nan')

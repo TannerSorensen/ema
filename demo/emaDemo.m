@@ -1,3 +1,4 @@
+addpath(genpath('../util'))
 
 % Task:
 % Find the peak velocity of the /o/ constriction 
@@ -19,7 +20,7 @@ try
     tongue={'T1';'T2';'T3';'T4'};
     lips={'LL','UL'};
     jaw={'MNI','MNM'};
-    plotLandmarks(fullfile(iDir,fl{i}),lmStr,tongue,lips,jaw,lm(i),winSize);
+    playLandmark(fullfile(iDir,fl{i}),lmStr,tongue,lips,jaw,lm(i),winSize);
 catch e
     error(['Error: file number must an '...
         'integer from %d to %d'],1,length(fl));
