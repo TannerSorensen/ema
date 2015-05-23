@@ -1,17 +1,23 @@
-function [v,fv]=process(s,Fs,pca)
+function [v,fv]=process(s,Fs,lm)
 
 % Replace NaN measurements with average along the relevant dimension.
 % (script adapted from MT via MVIEW)
 s = fixNaN(s);
 
+% Find the interval I over which to compute U.
+winSize = 50; % msec
+win = ms2sampl(winSize,Fs);
+win = fix(win/2);
+i = [max(1,lm-win),min(size(s,1),lm+win)];
 % Project signal S onto one dimension.
-s = pcaProj(s,pca,Fs,80);
+u = getPC(s(i(1):i(2),:));
+sHat = proj(s,u);
 
 % Compute velocity using central differences.
-v = computeVelocity(s,Fs);
+v = computeVelocity(sHat,Fs);
 
 % Filter velocity.
-fLen=40;
+fLen=20;
 fWin=ms2sampl(fLen,Fs);
 fv = filter(ones(1,fWin)./fWin,1,v);
 

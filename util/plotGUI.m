@@ -57,6 +57,10 @@ function lm = plotGUI(a,Fa,s,Fs,lmStr)
                 case 're'
                     [~,lm]=edges(s,Fs,...
                         peakVelocity(s,Fs,guess));
+                case 'lere'
+                    lm=NaN(1,2);
+                    [lm(1),lm(2)]=edges(s,Fs,...
+                        peakVelocity(s,Fs,guess));
                 otherwise
                     lm=NaN;
             end

@@ -1,4 +1,4 @@
-function yHat = emaBasis(iDir,fl,lm,an)
+function [xHat,yHat,t] = emaBasis(iDir,fl,lm,an)
 % Input:
 %   IDIR - string, input directory with EMA files.
 %   FL - struct array, entries contain field NAME with file names.
@@ -10,41 +10,38 @@ function yHat = emaBasis(iDir,fl,lm,an)
 % Add FDA scrpts to path.
 % (written by James Ramsay)
 addpath(fdaPath)
-% ODIR is the original current directory.
-oDir = cd;
-% IDIR is the directory where the files of FL are saved.
-cd(iDir)
 for i = 1:length(fl)
     % Import data.
-    fn = fl(i).name;
+    fn = fullfile(iDir,fl{i});
     [~,~,s,Fs] = emaImport(fn,an);
     
     % Project S onto principal component U over window of length WIN.
-    win=ms2sampl(200,Fs);
-    c=ms2sampl(lm(i),Fs);
-    if dataGuard(s)
-        sHat = pcaProj(s,c,Fs,win);
+    win=ms2sampl(400,Fs);
+    if any(~isnan(s(:))) && ~isnan(lm(i))
         % Row I of matrix Y is projection SHAT of S onto U over window WIN.
-        win=ceil([-win win]/2)+c;
+        win=ceil([-win win]/2)+lm(i);
         if i==1
             % Initialize output.
+            x=NaN(length(fl),win(2)-win(1)+1);
             y=NaN(length(fl),win(2)-win(1)+1);
         end
-        y(i,:)=sHat(win(1):win(2));
+        x(i,:)=s(win(1):win(2),1);
+        y(i,:)=s(win(1):win(2),2);
+    else
+        x(i,:)=NaN;
+        y(i,:)=NaN;
     end
 end
 
+x=x(~isnan(x(:,1)),:);
 y=y(~isnan(y(:,1)),:);
 
 % Smooth.
-t=0:Fs:size(y,2)*Fs-1;
+t=linspace(0,(size(y,2)-1)*(1/Fs),size(y,2));
 norder=6;
 nbasis=length(t)+norder-2;
 tBasis = create_bspline_basis([t(1) t(end)],nbasis,norder,t);
 pars=fdPar(tBasis, 4, 0.01);
 yHat=smooth_basis(t,y',pars);
-
-% Return to ODIR.
-cd(oDir)
-
+xHat=smooth_basis(t,x',pars);
 end

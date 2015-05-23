@@ -15,7 +15,8 @@ fl = regexpi({fl.name},iStr,'match');
 fl = [fl{:}];
 
 % Initialize output LM.
-lm=NaN(length(fl),1);
+if strcmp(lmStr,'lere'), nLm = 2; else nLm = 1; end
+lm=NaN(length(fl),nLm);
 
 % For each input ...
 for i=1:length(fl)
@@ -23,7 +24,7 @@ for i=1:length(fl)
     try
         [a,Fa,s,Fs] = emaImport(fn,an);
         % ... assign the desired landmark to output LM.
-        lm(i)=plotGUI(a,Fa,s,Fs,lmStr);
+        lm(i,:)=plotGUI(a,Fa,s,Fs,lmStr);
     catch e
         lm(i) = NaN;
     end
