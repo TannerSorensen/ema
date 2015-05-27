@@ -2,6 +2,10 @@ function [p,e] = dePar(xC,vC,Fs,eqn,pInit)
 % See the webpage 
 %  http://de.mathworks.com/help/optim/ug/optimizing-a-simulation-or-ordinary-differential-equation.html
     
+    % Set optimization settings.
+    options = optimset('MaxFunEvals',1500,'TolFun',1e-1,'TolX',1e-1,...
+        'PlotFcns',@optimplotx);
+    
     % Initialize return arguments.
     p=NaN(size(xC,1),length(pInit));
     e=NaN(size(xC,1),1);
@@ -13,7 +17,7 @@ function [p,e] = dePar(xC,vC,Fs,eqn,pInit)
         t = 0:(1/Fs):(length(x)-1)*(1/Fs);
         v = vC{i};
         ic = [x(1),v(1)];
-        [p(i,:),e(i)] = fminsearch(@(p) obj(p),pInit);
+        [p(i,:),e(i)] = fminsearch(@(p) obj(p),pInit,options);
         waitbar(i/size(xC,1),wb,sprintf('%d%%',ceil(100*i/size(xC,1))))
     end
     close(wb)

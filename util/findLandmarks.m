@@ -15,7 +15,7 @@ fl = regexpi({fl.name},iStr,'match');
 fl = [fl{:}];
 
 % Initialize output LM.
-if strcmp(lmStr,'lere'), nLm = 2; else nLm = 1; end
+nLm=floor(length(lmStr)/2);
 lm=NaN(length(fl),nLm);
 
 % For each input ...

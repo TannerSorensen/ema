@@ -39,6 +39,8 @@ v=(Fs/10)*central_diff(y,t);
 hold on
 plot(pal(:,1),pal(:,2),'black','LineWidth',2)
 plot(pha(:,1),pha(:,2),'black','LineWidth',2)
+xlim(xlim + [-30 30])
+ylim(ylim + [-30 30])
 
 % Draw initial tongue contour.
 sx=linspace(x(1,1),x(1,length(tongue)));

@@ -18,6 +18,7 @@ function [sHat,dsHat,ddsHat,Fs,nanInd] = emaCell(iDir,fl,lm,an)
 addpath(fdaPath)
 
 sHat = cell(length(fl),1); dsHat=sHat; ddsHat=sHat;
+lm = lm(:,[1 end]);
 
 for i = 1:length(fl)
     

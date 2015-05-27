@@ -11,7 +11,9 @@ sigma = cov(gamma);
 pc = v(:,end);
 
 % Linearly transform PC to quadrants I and II.
-pc=-pc;
+if pc(2) < 0
+    pc=-pc;
+end
 
 % LAMBDA has largest eigenvalue first.
 lambda = vecRev(double(diag(d))); 
