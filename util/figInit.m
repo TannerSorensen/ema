@@ -1,9 +1,10 @@
-function gp = figInit(a,Fa,s,Fs)
+function gp = figInit(a,Fa,s,Fs,fn)
 % Input: 
 %   A - vector of double, audio signal
 %   FA - integer, audio signal sampling frequency
 %   S - vector of double, EMA signal
 %   FS - integer, EMA sampling frequency
+%   FN - string, file name
 
     set(0,'DefaultFigureWindowStyle','docked')
     gp.f=figure(1);
@@ -16,6 +17,7 @@ function gp = figInit(a,Fa,s,Fs)
     gp.width=.8;
     
     gp.h1=axes('Position',[gp.left gp.bottom(1) gp.width gp.height]);
+    title( fn, 'Interpreter', 'none');
     gp.h2=axes('Position',[gp.left gp.bottom(2) gp.width gp.height]);
     gp.h3=axes('Position',[gp.left gp.bottom(3) gp.width gp.height]);
     gp.h4=axes('Position',[gp.left gp.bottom(4) gp.width gp.height]);
@@ -39,17 +41,27 @@ function gp = figInit(a,Fa,s,Fs)
     uicontrol('Style', 'slider',...
         'Min',0,'Max',sampl2ms(size(s,1)-1,Fs),...
         'Value',ceil(sampl2ms(size(s,1)-1,Fs)/2),...
-        'Position', [370 5 200 20],...
+        'Position', [440 5 100 20],...
         'Callback', @slidexlim); 
     % window size slider
     gp.winSizeField = uicontrol('Style','edit',...
-        'String','2000','Position',[300,5,50,20]);
+        'String','2000','Position',[560,5,50,20]);
+    % confirm selection (advance)
     gp.confirmToggle = uicontrol('Style','togglebutton',...
-        'String','confirm','Min',0,'Max',1,'Value',0,...
+        'String','advance','Min',0,'Max',1,'Value',0,...
         'Position',[160 5 50 20]);
+    % back
+    gp.backToggle = uicontrol('Style','togglebutton',...
+        'String','back','Min',0,'Max',1,'Value',0,...
+        'Position',[370 5 50 20]);
+    % select
     gp.selectToggle = uicontrol('Style','togglebutton',...
         'String','select','Min',0,'Max',1,'Value',0,...
         'Position',[230 5 50 20]);
+    % skip
+    gp.skipToggle = uicontrol('Style', 'togglebutton',...
+        'String', 'skip','Min',0,'Max',1,'Value',0,...
+        'Position',[300 5 50 20]);
     
     function playSelection(source,callbackdata)
         win=ms2sampl(get(gp.h2,'xlim'),Fa);

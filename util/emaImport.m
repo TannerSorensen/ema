@@ -32,11 +32,13 @@ try
     % receiver coil AN.
     if iscell(an)
         for i=1:length(an)
-            s.(an{i})=double(S(strncmpi(an{i},{S.NAME},length(an{i}))).SIGNAL);
+            d=size(S(strncmpi(an{i},{S.NAME},length(an{i}))).SIGNAL,2);
+            s.(an{i})=double(S(strncmpi(an{i},{S.NAME},length(an{i}))).SIGNAL(:,1:min(3,d)));
             Fs=S(strncmpi(an{i},{S.NAME},length(an{i}))).SRATE;
         end
     else
-        s=double(S(strncmpi(an,{S.NAME},length(an))).SIGNAL);
+        d=size(S(strncmpi(an,{S.NAME},length(an))).SIGNAL,2);
+        s=double(S(strncmpi(an,{S.NAME},length(an))).SIGNAL(:,1:min(3,d)));
         Fs=S(strncmpi(an,{S.NAME},length(an))).SRATE;
     end
     

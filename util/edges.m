@@ -13,8 +13,19 @@ THRESHOLD = 0.2;
 % Compute velocity and filter velocity.
 [~,fv]=process(s,Fs,tpv);
 
+% Find left edge minimum.
+[~,i]=findpeaks(-fv(tpv:end));
+reMinInd=tpv+i(1)-1;
+reThresh=fv(reMinInd) + THRESHOLD*(fv(tpv)-fv(reMinInd));
+
+% Find right edge minimum.
+[~,i]=findpeaks(-fv(1:tpv));
+leMinInd=i(end);
+leThresh=fv(leMinInd) + THRESHOLD*(fv(tpv)-fv(leMinInd));
+
+
 % Find left and right edges.
-re=tpv+find(fv(tpv:end)<THRESHOLD*fv(tpv),1);
-le=tpv-find(vecRev(fv(1:tpv))<THRESHOLD*fv(tpv),1);
+re=tpv+find(fv(tpv:end)<reThresh,1);
+le=tpv-find(vecRev(fv(1:tpv))<leThresh,1);
 
 end

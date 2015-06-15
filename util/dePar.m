@@ -7,7 +7,7 @@ function [p,e] = dePar(xC,vC,Fs,eqn,pInit)
         'PlotFcns',@optimplotx);
     
     % Initialize return arguments.
-    p=NaN(size(xC,1),length(pInit));
+    p=NaN(size(xC,1),length(pInit)+1);
     e=NaN(size(xC,1),1);
     
     % Estimate parameters.
@@ -16,8 +16,10 @@ function [p,e] = dePar(xC,vC,Fs,eqn,pInit)
         x = xC{i};
         t = 0:(1/Fs):(length(x)-1)*(1/Fs);
         v = vC{i};
-        ic = [x(1),v(1)];
-        [p(i,:),e(i)] = fminsearch(@(p) obj(p),pInit,options);
+        ic = [0,min(0,v(1))];
+        x0 = -abs(x(end)-x(1));
+        [p(i,1:end-1),e(i)] = fminsearch(@(p) obj(p),pInit,options);
+        p(i,end) = x0;
         waitbar(i/size(xC,1),wb,sprintf('%d%%',ceil(100*i/size(xC,1))))
     end
     close(wb)
@@ -34,8 +36,6 @@ function [p,e] = dePar(xC,vC,Fs,eqn,pInit)
     end
 
     function vHat = de(p)
-        
-        x0 = x(end);
         
         % Find the solution to the system.
         switch eqn

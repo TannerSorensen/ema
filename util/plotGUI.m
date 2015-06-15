@@ -1,12 +1,14 @@
-function lm = plotGUI(a,Fa,s,Fs,lmStr)
+function [lm,incr] = plotGUI(a,Fa,s,Fs,lmStr,fn)
 % Input:
 %   A - vector of double, audio signal
 %   FA - integer, audio signal sampling frequency
 %   S - vector of double, EMA signal
 %   FS - integer, EMA sampling frequency
 %   LMSTR - string, landmark name (e.g., 'pv')
+%   FN - string, file name
 % Output:
-%   LM - integer, landmark time point in samples.
+%   LM - integer, landmark time point in samples. 
+%        One of 'le', 're', 'pv', 'lere', 'lepvre'.
 %
 % GUI instructions for users
 % 
@@ -21,10 +23,13 @@ function lm = plotGUI(a,Fa,s,Fs,lmStr)
 %   number field - change size of visible time 
 %     window (msec)
 
+    nLm=floor(length(lmStr)/2);
+    incr=1;
+    
     %---------------------
     % Create axes and GUI.
     %---------------------
-    p = figInit(a,Fa,s,Fs);
+    p = figInit(a,Fa,s,Fs,fn);
     axes(p.h1), plotSpectrogram(a,Fa)
     axes(p.h2), plotWaveform(a,Fa)
     axes(p.h3), plotDisplacement(s,Fs,'center')
@@ -38,8 +43,17 @@ function lm = plotGUI(a,Fa,s,Fs,lmStr)
         % What should happen next?
         done=get(p.confirmToggle,'Value');
         select=get(p.selectToggle,'Value');
+        skip=get(p.skipToggle,'Value');
+        back=get(p.backToggle,'Value');
         
-        if ~done && select
+        if back
+            lm = NaN(1,nLm);
+            done = true;
+            incr = -1;
+        elseif skip
+            lm = NaN(1,nLm);
+            done = true;
+        elseif ~done && select
             % We are not done and we want 
             % to guess landmark time.
             

@@ -27,7 +27,7 @@ for i = 1:length(fl)
         [~,~,s,Fs] = emaImport(fn,an);
         
         % Find larger delimiting time window.
-        winDSize=ms2sampl(500,Fs);
+        winDSize=ms2sampl(400,Fs);
         winD=ceil([-winDSize winDSize]/2)+lm(i);
         
         % Find smaller PCA time window.
@@ -47,7 +47,7 @@ for i = 1:length(fl)
 end
 
 % Smooth SHAT.
-t=1000*linspace(0,(size(sHat,2)-1)*(1/Fs),size(sHat,2));
+t=linspace(0,(size(sHat,2)-1)*(1/Fs),size(sHat,2));
 norder=8;
 nbasis=length(t)+norder-2;
 tBasis = create_bspline_basis([t(1) t(end)],nbasis,norder,t);

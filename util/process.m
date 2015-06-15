@@ -21,7 +21,7 @@ end
 v = computeVelocity(sHat,Fs);
 
 % Filter velocity.
-fLen=20;
+fLen=5;
 fWin=ms2sampl(fLen,Fs);
 fv = filter(ones(1,fWin)./fWin,1,v);
 

@@ -19,14 +19,18 @@ nLm=floor(length(lmStr)/2);
 lm=NaN(length(fl),nLm);
 
 % For each input ...
-for i=1:length(fl)
+i=1;
+while i <= length(fl)
     fn = fullfile(iDir,fl{i});
     try
         [a,Fa,s,Fs] = emaImport(fn,an);
         % ... assign the desired landmark to output LM.
-        lm(i,:)=plotGUI(a,Fa,s,Fs,lmStr);
+        [lm(i,:),incr]=plotGUI(a,Fa,s,Fs,lmStr,fn);
+        % Increment index I.
+        i=i+incr;
     catch e
-        lm(i) = NaN;
+        lm(i,:) = NaN(1,nLm);
+        i=i+1;
     end
 end
 
