@@ -17,7 +17,7 @@ function gp = figInit(a,Fa,s,Fs,fn)
     gp.width=.8;
     
     gp.h1=axes('Position',[gp.left gp.bottom(1) gp.width gp.height]);
-    title( fn, 'Interpreter', 'none');
+    title( fn, 'Interpreter', 'none'), hold on
     gp.h2=axes('Position',[gp.left gp.bottom(2) gp.width gp.height]);
     gp.h3=axes('Position',[gp.left gp.bottom(3) gp.width gp.height]);
     gp.h4=axes('Position',[gp.left gp.bottom(4) gp.width gp.height]);

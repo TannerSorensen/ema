@@ -11,7 +11,7 @@ try
     % Plot spectrogram.
     surf(t,f(i),10*log10(abs(p(i,:))),'EdgeColor','none');
     axis xy, axis tight, colormap(gray), view(0,90);
-    set(gca,'XTickLabel',[],'XTick',[],'xlim',[0,cutoff])
+    set(gca,'XTickLabel',[],'XTick',[])
     ylabel('Frequency (Hz)')
 catch e
     % No Signal Processing Toolbox?

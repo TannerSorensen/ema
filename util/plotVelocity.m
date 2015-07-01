@@ -13,8 +13,13 @@ ylim([0,1.1*max(v)])
 % Plot peak velocity (if present).
 if ~isempty(varargin)
     hold on
-    pv=varargin{1};
-    scatter(sampl2ms(pv,Fs),v(pv),40,[.8 .2 .2],'filled')
+    lm=varargin{1};
+    [~,fv]=process(s,Fs,lm);
+    scatter(t(lm),fv(lm),40,[.8 .2 .2],'filled')
+    if length(lm)==3
+        plot(t(lm(1):lm(3)), fv(lm(1):lm(3)), ...
+            'Color',[0.9 0.2 0.2], 'LineWidth', 2)
+    end
     hold off
 end
 

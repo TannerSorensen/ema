@@ -32,7 +32,7 @@ function [lm,incr] = plotGUI(a,Fa,s,Fs,lmStr,fn)
     p = figInit(a,Fa,s,Fs,fn);
     axes(p.h1), plotSpectrogram(a,Fa)
     axes(p.h2), plotWaveform(a,Fa)
-    axes(p.h3), plotDisplacement(s,Fs,'center')
+    axes(p.h3), plotDisplacement(s,Fs)
     axes(p.h4), plotVelocity(s,Fs)
     
     %--------------------
@@ -79,13 +79,19 @@ function [lm,incr] = plotGUI(a,Fa,s,Fs,lmStr,fn)
                     lm=NaN(1,3);
                     lm(2)=peakVelocity(s,Fs,guess);
                     [lm(1),lm(3)]=edges(s,Fs,lm(2));
+                case 'mc'
+                    lm=maxCon(s,Fs,guess);
                 otherwise
                     lm=NaN;
             end
             
-            % Display landmark in axes H4.
-            axes(p.h4), plotVelocity(s,Fs,lm)
-            
+            % Display landmark in axes.
+            if strcmp(lmStr,'mc')
+                axes(p.h3), plotDisplacement(s,Fs,lm)
+            else
+                axes(p.h3), plotDisplacement(s,Fs,lm)
+                axes(p.h4), plotVelocity(s,Fs,lm)
+            end
         else
             % We are just not yet done, but 
             % we would like to do something 

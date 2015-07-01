@@ -20,7 +20,7 @@ iDir='../data';
 iStr='.*.mat';
 lmStr='pv';
 an='T4';
-[fl,lm] = findLandmarks(iStr,iDir,lmStr,an);
+[fl,lm] = findLandmarks(iStr,iDir,lmStr,an,0);
 
 % Visualize file I over a 500 msec time window 
 % around landmark LM.

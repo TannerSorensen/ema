@@ -1,4 +1,7 @@
-function [v,fv]=process(s,Fs,lm)
+function [v,fv,fs,u]=process(s,Fs,lm)
+
+winSize = 60; % msec
+win = ms2sampl(winSize,Fs);
 
 % Replace NaN measurements with average along the relevant dimension.
 % (script adapted from MT via MVIEW)
@@ -6,10 +9,12 @@ s = fixNaN(s);
 
 if size(s,2)>1
     % Find the interval I over which to compute U.
-    winSize = 50; % msec
-    win = ms2sampl(winSize,Fs);
-    win = fix(win/2);
-    i = [max(1,lm-win),min(size(s,1),lm+win)];
+    halfWin = fix(win/2);
+    if length(lm)==1
+        i = [max(1,lm-halfWin),min(size(s,1),lm+halfWin)];
+    else
+        i = [max(1,lm(2)-halfWin),min(size(s,1),lm(2)+halfWin)];
+    end
     % Project signal S onto one dimension.
     u = getPC(s(i(1):i(2),:));
     sHat = proj(s,u);
@@ -17,12 +22,15 @@ else
     sHat = s;
 end
 
-% Compute velocity using central differences.
-v = computeVelocity(sHat,Fs);
-
-% Filter velocity.
-fLen=5;
-fWin=ms2sampl(fLen,Fs);
-fv = filter(ones(1,fWin)./fWin,1,v);
+% Filter signals if signal processing toolbox is installed.
+try
+    [b,a]=butter(6,20*(2/Fs)); % 6th order, 20 Hz cutoff
+    fs = filtfilt(b,a,sHat);
+    v = computeVelocity(fs,Fs);
+    fv = filtfilt(ones(1,win)./win,1,v); % rectangular window moving average filter
+catch
+    fs = sHat;
+    fv = v;
+end
 
 end

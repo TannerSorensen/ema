@@ -1,36 +1,57 @@
-function [p,e] = dePar(xC,vC,Fs,eqn,pInit)
+function costFunPlot(xC,vC,Fs,eqn,pInit)
 % See the webpage 
 %  http://de.mathworks.com/help/optim/ug/optimizing-a-simulation-or-ordinary-differential-equation.html
     
     % Set optimization settings.
-    options = optimset('MaxFunEvals',1500,'TolFun',1e-1,'TolX',1e-1,...
-        'PlotFcns',@optimplotx);
+    options = optimset('MaxFunEvals',1500,'TolFun',1e-1,'TolX',1e-1);
     
     % Initialize return arguments.
     p=NaN(length(xC),length(pInit)+1);
     e=NaN(length(xC),1);
     
-    % Estimate parameters.
-    wb = waitbar(0,'');
-    for i=1:length(xC)
-        x = xC{i};
-        t = 0:(1/Fs):(length(x)-1)*(1/Fs);
-        v = vC{i};
-        ic = [0,v(1)];
-        x0 = x(end)-x(1);
-        [p(i,1:end-1),e(i)] = fminsearch(@(p) obj(p),pInit,options);
-        p(i,end) = x0;
-        waitbar(i/length(xC),wb,sprintf('%d%%',ceil(100*i/length(xC))))
+    % Optimize a random observation in XC.
+    rng(9991);
+    i = randi(length(xC));
+    x = xC{i};
+    t = 0:(1/Fs):(length(x)-1)*(1/Fs);
+    v = vC{i};
+    ic = [0,v(1)];
+    x0 = x(end)-x(1);
+    [p,e] = fminsearch(@(p) obj(p),pInit,options);
+    
+    % Systematically explore parameter space.
+    pSpace(1,:) = linspace(0,2*p(1),40);
+    pSpace(2,:) = linspace(0,2*p(2),40);
+    eqn = 'n';
+    cf = NaN(40,40);
+    for j=1:40
+        k=1;
+        while k<41
+            
+            cf(j,k) = obj([pSpace(1,j) pSpace(2,k)]);
+            if isnan(cf(j,k))
+                k=41;
+            else
+                k=k+1;
+            end
+        end
     end
-    close(wb)
-
+    figure(9)
+    pcolor(pSpace(1,:),pSpace(2,:),log(cf)), hold on
+    colormap(gray(10))
+    colorbar
+    scatter(p(1),p(2),10^2,[1 1 1],'+','LineWidth',2), hold off
+    xlabel('$\omega $','Interpreter','LaTeX')
+    ylabel('$d$','Interpreter','LaTeX','rot',0)
+    
+    
     function e = obj(p)
         
         try
             vHat = de(p);
             e = sum(((vHat-v)/length(v)).^2);
         catch err
-            e = Inf;
+            e = NaN;
         end
         
     end
