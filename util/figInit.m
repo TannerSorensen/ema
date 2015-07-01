@@ -12,9 +12,9 @@ function gp = figInit(a,Fa,s,Fs,fn)
     
     % Dimensions of four panels.
     gp.bottom=linspace(0.7,0.1,4);
-    gp.height=.2-.01;
+    gp.height=0.2-0.01;
     gp.left=0.15;
-    gp.width=.8;
+    gp.width=0.8;
     
     gp.h1=axes('Position',[gp.left gp.bottom(1) gp.width gp.height]);
     title( fn, 'Interpreter', 'none'), hold on

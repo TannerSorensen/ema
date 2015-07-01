@@ -97,7 +97,6 @@ function [lm,incr] = plotGUI(a,Fa,s,Fs,lmStr,fn)
             % we would like to do something 
             % else (e.g., zooming) before 
             % finding LM.
-            
             pause(0.5)
         end
     end

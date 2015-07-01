@@ -24,10 +24,11 @@ end
 
 % Filter signals if signal processing toolbox is installed.
 try
-    [b,a]=butter(6,20*(2/Fs)); % 6th order, 20 Hz cutoff
+    [b,a]=butter(6,10*(2/Fs)); % 6th order, 10 Hz cutoff
     fs = filtfilt(b,a,sHat);
     v = computeVelocity(fs,Fs);
     fv = filtfilt(ones(1,win)./win,1,v); % rectangular window moving average filter
+    fv = v;
 catch
     fs = sHat;
     fv = v;
