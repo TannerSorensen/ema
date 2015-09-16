@@ -1,4 +1,4 @@
-function [v,fv,fs,u]=process(s,Fs,lm)
+function [v,fv,fsHat,u,cv,fs]=process(s,Fs,lm)
 
 winSize = 60; % msec
 win = ms2sampl(winSize,Fs);
@@ -17,21 +17,19 @@ if size(s,2)>1
     end
     % Project signal S onto one dimension.
     u = getPC(s(i(1):i(2),:));
+    if sign(atan2(u(2),u(1)))==-1, u=-u; end
     sHat = proj(s,u);
 else
     sHat = s;
 end
 
-% Filter signals if signal processing toolbox is installed.
-try
-    [b,a]=butter(6,10*(2/Fs)); % 6th order, 10 Hz cutoff
-    fs = filtfilt(b,a,sHat);
-    v = computeVelocity(fs,Fs);
-    fv = filtfilt(ones(1,win)./win,1,v); % rectangular window moving average filter
-    fv = v;
-catch
-    fs = sHat;
-    fv = v;
-end
+%[b,a]=butter(6,10*(2/Fs)); % 6th order, 10 Hz cutoff
+%fsHat = filtfilt(b,a,sHat);
+fsHat = sHat;
+[v,cv] = computeVelocity(sHat,Fs);
+fs = s;
+winSize = 20; % msec
+win = ms2sampl(winSize,Fs);
+fv = abs(filtfilt(ones(1,win)./win,1,cv));
 
 end
