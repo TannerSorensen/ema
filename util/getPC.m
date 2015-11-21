@@ -6,6 +6,7 @@ function [pc,lambda] = getPC(gamma)
 %   U is principal component vector.
 %   LAMBDA is the vector of eigenvalues.
 
+gamma = gamma - repmat(mean(gamma,1),size(gamma,1),1);
 sigma = cov(gamma);
 [v,d] = eig(sigma);
 pc = v(:,end);
